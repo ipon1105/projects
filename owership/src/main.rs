@@ -1,55 +1,36 @@
 fn main() {
-    // Владение и Функции
-    // foo();
+    // Ссылки и заимствование
+    let mut s = String::from("hello");
+    let l = get_len(&s);
 
-    // Владение и возращения значений
-    // bar();
+    println!("{s} len = {l}");
+
+    // Изменяемые ссылки
+    set_world(&mut s);
+    let l = get_len(&s);
+    println!("{s} len = {l}");
+
+    let a = &s;
+    let b = &s;
+    println!("{a} {b}");
+
+
+    let c = &mut s;
+    println!("{c}");
+
+    // Висячие ссылки
+    let d = get_str();
 }
 
-fn foo(){
-    let str = String::from("hello");  // str создаётся :)
-
-    takes_ownership(str);     // Значение str передаётся как аргумент функции
-    // takes_ownership(str);     // (ОШИБКА) str больше не существует :( 
-    
-
-    let x = 5;              // x создаётся
-
-    makes_copy(x);          // Значение x передаётся как аргумент функции
-    makes_copy(x);          // Посколько x простой тип, то оно передаётся копией
-                            // и x продолжает существовать
-    println!("x = {x}");
+fn get_str() -> &String{
+    let str = String::from("stroka");
+    &str
 }
-// Вызвает drop для x и str однако str 
-// Уже было уничтожено в после выполнения
-// функции, так что ничего не делаем
 
-fn takes_ownership(mut str: String) { // str создаётся
-    str.push_str("+str");
-    println!("{}", str);
+fn get_len(s: &String) -> usize {
+    s.len()
 }
-// Вызывается drop - str уничтожается
 
-fn makes_copy(mut i: i32) { // int создаётся
-    i = i + 5;
-    println!("{}", i);
-} 
-// Вызывается drop - int уничтожается
-
-fn bar(){
-    let s1 = String::from("hello");
-    let s2 = add_world(s1);
-    
-    // println!("{s1}");
-    println!("{s2}");
+fn set_world(s: &mut String) {
+    s.push_str(" world");
 }
-// drop вызываем только для s1, s2 уже уничтожен
-
-fn add_world(mut str: String) -> String {
-    str.push_str(" world");     // world добавляется
-    str
-}
-// При возрате str мы передаём право владение другому владельцу
-// Поэтому drop для str не вызывается
-
-
