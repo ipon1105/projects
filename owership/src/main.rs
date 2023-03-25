@@ -1,36 +1,21 @@
 fn main() {
-    // Ссылки и заимствование
-    let mut s = String::from("hello");
-    let l = get_len(&s);
+    let mut str = String::from("Hello world");
+    let len = get_first_word(&str);
 
-    println!("{s} len = {l}");
+    // str.clear();
+    println!("len of str({str}) = {len}");
 
-    // Изменяемые ссылки
-    set_world(&mut s);
-    let l = get_len(&s);
-    println!("{s} len = {l}");
-
-    let a = &s;
-    let b = &s;
-    println!("{a} {b}");
-
-
-    let c = &mut s;
-    println!("{c}");
-
-    // Висячие ссылки
-    let d = get_str();
+    let a = [1,2,3,4,5];
+    let slice = &a[2..5]; // Тут моя Ошибка была. Срез [2..4] - это значения 3, 4.
 }
 
-fn get_str() -> &String{
-    let str = String::from("stroka");
-    &str
-}
+fn get_first_word(str: &str) -> &str {
+    let bytes = str.as_bytes();
 
-fn get_len(s: &String) -> usize {
-    s.len()
-}
-
-fn set_world(s: &mut String) {
-    s.push_str(" world");
+    for (i, &iter) in bytes.iter().enumerate() {
+        if iter == b' ' {
+            return &str[..i];
+        }
+    }
+    &str[..]
 }
