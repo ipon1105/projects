@@ -1,20 +1,47 @@
 #[derive(Debug)]
-struct Ractangle {
+struct Rectangle {
     width: f32,
     height: f32,
 }
 
+impl Rectangle {
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+}
+
+impl Rectangle {
+    fn can_hold(self: &Self, rect: &Rectangle) -> bool{
+        self.height > rect.height && self.width > rect.width
+    }
+}
+
+impl Rectangle {
+    fn new(width: f32, height: f32) -> Self {
+        Self { 
+            width, 
+            height,
+        }
+    }
+}
+
 fn main() {
-    let mut rect: Ractangle = Ractangle{
+    // Метод
+    // Метод с несколькими параметрами
+    // Ассоциированные функции
+
+    let rect0: Rectangle = Rectangle{
         width:33.3,
         height:23.9,
     };
-    dbg!(rect.width = 34.0);
-    let area: f32 = area(&rect);
+    let rect1: Rectangle = Rectangle::new(20.0, 13.9);
     
-    dbg!("rect = {:#?}", rect);
+
+    let area: f32 = (&rect0).area();
+    dbg!("rect0 = {:?}", &rect0);
+    dbg!("rect1 = {:?}", &rect1);
+    dbg!("area = {}", area);
+    dbg!("rect0 can hold rect1 = {}", rect0.can_hold(&rect1));
+    dbg!("rect1 can hold rect0 = {}", rect1.can_hold(&rect0));
 }
 
-fn area(rect: &Ractangle) -> f32 {
-    rect.width * rect.height
-}
