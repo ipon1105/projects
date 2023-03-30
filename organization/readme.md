@@ -64,7 +64,7 @@ pub mod garden {
     let y = data;
 ```
 
-Идеоматические пути с **use**
+Идиоматические пути с **use**
 ```rust
     use garden::vegetables;
     //...
