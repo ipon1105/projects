@@ -1,34 +1,34 @@
-#[derive(Debug)]
-enum SpredsheetCell {
-    Int(i32),
-    Float(f64),
-}
-
 fn main() {
-    // Коллекция Vec<T>
-    // Создание, Изменение, Чтение
-    let v: Vec<i32> = Vec::new();
-    let v: Vec<i32> = vec![0; 5];
-    // let mut v: Vec<i32> = vec!(1,2,3,4);
-    let mut v: Vec<SpredsheetCell> = Vec::new();
+    // Строки - Изменение
+    let x: String = String::new();
+    let x: String = "string".to_string();
+    let mut x: String = String::from("strings");
+    println!("x = {}", x);
 
-    v.push(SpredsheetCell::Int(3));
-    v.push(SpredsheetCell::Float(3.5));
+    // x.push('a');
+    x.push_str(" is cool");
+    println!("x = {}", x);
 
-    let x: &mut SpredsheetCell = &mut v[0];
-    *x = SpredsheetCell::Int(4);
-
-    // println!("x = {}", v[100]);
-    // println!("x = {}", v.get(100));
+    let a: String = String::from("He你llo");
+    let space: String = String::from(" ");
+    let b: String = String::from("World");
     
-    // v[0] = 1000;
-
+    // let res = a + &space + &b;
+    let res = format!("{a} {b}");
+    println!("a = {}", a);
+    println!("b = {}", b);
+    println!("res = {}", res);
+    // Индексирование
+    // let x = res[0];
+    // Байты, Скалярные значения и Кластеры Графем
+    // Срезы строк
+    // let s = &res[0..4];
+    // println!("s = {}", s);
     // Перебор
-    for i in &v {
-        println!("i = {:?}", i);
+    for c in "3Д".chars(){
+        println!("c = {c}");
     }
-    for i in &mut v {
-        println!("i = {:?}", i);
+    for c in "3 Д".bytes(){
+        println!("byte = {c}");
     }
-
 }
