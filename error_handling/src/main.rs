@@ -1,9 +1,10 @@
-fn main() {
-    // Ошибки
-    // Макрос panic!
-    println!("hi");
-    panic!("Test error");
+use std::{fs::File, io::{ErrorKind, Read}};
+use std::error::Error;
 
-    // Трассировка panic!
-    // RUST_BACKTRACE=1 cargo run
-}8
+fn main() -> Result<(), Box<dyn Error>> {
+    let mut name: String = String::new();
+    File::open("file.txt")?.read_to_string(&mut name)?;
+
+    println!("name = {}", name);
+    Ok(())
+}
