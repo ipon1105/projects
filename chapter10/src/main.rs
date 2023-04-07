@@ -1,60 +1,115 @@
-#[derive(Debug)]
-struct Point<X, Y> {
-    x: X,
-    y: Y,
-}
-struct Point_f64_char{
-    x: f64,
-    y: char,
-}
-struct Point_char_char{
-    x: char,
-    y: char,
+
+struct Article {
+    author: String,
+    text: String,
+    //* */
 }
 
+struct Tweet {
+    author: String,
+    msg: String,
+    //* */
+}
 
-impl<X, Y> Point<X, Y> {
-    // fn x(&self) -> &X {
-    //     &self.x
-    // }
+trait Summary {
+    fn sum(&self) -> String {
+        format!("author is: {}", self.author())
+    }
 
-    // fn y(&self) -> &Y {
-    //     &self.y
-    // }
+    fn author(&self) -> String;
+}
 
-    fn mixup<X2, Y2> (self, other: Point<X2, Y2>) -> Point<X, Y2> {
-        Point {
-            x: self.x,
-            y: other.y,
+impl Summary for Article { 
+    fn author(&self) -> String {
+        format!("{}", self.author)
+    }
+}
+
+impl Summary for Tweet {
+    fn sum(&self) -> String {
+        format!("{}", self.msg)
+    }
+
+    fn author(&self) -> String {
+        format!("{}", self.author)
+    }
+}
+
+struct A {
+    x: i32,
+}
+
+use std::fmt::Display;
+
+// fn notify(item: &(impl Summary + Display), item2: &(impl Summary + Clone)) -> String {
+//     format!("author: {}; sum = {}", item.author(), item.sum())
+// }
+
+fn notify<T, U>(item: &T, item2: &U) -> String
+where
+    T: Summary + Display,
+    U: Summary + Clone,
+{
+    // format!("author: {}; sum = {}", item.author(), item.sum())
+    "1".to_string()
+}
+
+// fn notify<T: Summary, U: std::fmt::Display>(item: &T, item2: &U) -> String {
+//     // format!("author: {}; sum = {}", item.author(), item.sum())
+//     "1".to_string()
+// }
+
+fn get_summary_struct(switch: bool) -> impl Summary {
+    if switch {
+        Tweet {author: "Ivan".to_string(), msg: "i like you".to_string()}
+    } else {
+        return Article {author: "German".to_string(), text: "We win on backetball".to_string() }
+    }
+}
+
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl <T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if (self.x > self.y){
+            print!("x > y")
+        } else {
+            print!("y >= x")
         }
     }
 }
+enum AB {
+    X(),
+}
+
+// impl<T: Display> ToString for T {
+    
+// }
 
 fn main() {
-    let x = Point{x: 3.0, y: 'c'};
-    let y = Point{x: 'a', y: 'd'};
+    // Типаж
+    let tweet = get_summary_struct(true);
+    let article = get_summary_struct(false);
 
-    let z = y.mixup(x);
-    println!("z = {:?}", z);
+    println!("{}", tweet.sum());
+    println!("{}", article.sum());
+    
+    // Согласованность или Сиротское Правило (Наш Типаж + любая структура кода) || (любой Типаж + наша структура кода), но не  (Либой Типаж + Любая структура кода)
+    // Поведение по умолчанию
 
-    // println!("x = {}", x.x());
-    // println!("y = {}", x.y());
+    // println!("{}", notify(&tweet));
+    // println!("{}", notify(&article));
+    // Типажи как параметры, Несколько параметров и Что под этим скрывается
+    // Ясные границы типажей с помощью where
 
-    // let v = [1,2,3,4,5,6,7];
-    // let max = largest(&v);
-    // println!("{max}");
+    // Условная реализация методов
+    let a = Pair{x: 3, y: 2};
+    let b = Pair{x: AB::X(), y: AB::X()};
+    a.cmp_display();
 
-    // let v = [1.0,2.0,3.0,4.0,5.0,6.0,8.0];
-    // let max = largest(&v);
-    // println!("{max}");
-}
-
-fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> &T {
-    let mut largest = &list[0];
-    for i in list {
-        if largest < i {
-            largest = i;
-        }
-    }
-    largest
+    // Общие реализации
+    3.to_string();
 }
