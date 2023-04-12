@@ -1,115 +1,64 @@
-
-struct Article {
-    author: String,
-    text: String,
-    //* */
-}
-
-struct Tweet {
-    author: String,
-    msg: String,
-    //* */
-}
-
-trait Summary {
-    fn sum(&self) -> String {
-        format!("author is: {}", self.author())
-    }
-
-    fn author(&self) -> String;
-}
-
-impl Summary for Article { 
-    fn author(&self) -> String {
-        format!("{}", self.author)
-    }
-}
-
-impl Summary for Tweet {
-    fn sum(&self) -> String {
-        format!("{}", self.msg)
-    }
-
-    fn author(&self) -> String {
-        format!("{}", self.author)
-    }
-}
-
-struct A {
-    x: i32,
-}
-
-use std::fmt::Display;
-
-// fn notify(item: &(impl Summary + Display), item2: &(impl Summary + Clone)) -> String {
-//     format!("author: {}; sum = {}", item.author(), item.sum())
-// }
-
-fn notify<T, U>(item: &T, item2: &U) -> String
-where
-    T: Summary + Display,
-    U: Summary + Clone,
-{
-    // format!("author: {}; sum = {}", item.author(), item.sum())
-    "1".to_string()
-}
-
-// fn notify<T: Summary, U: std::fmt::Display>(item: &T, item2: &U) -> String {
-//     // format!("author: {}; sum = {}", item.author(), item.sum())
-//     "1".to_string()
-// }
-
-fn get_summary_struct(switch: bool) -> impl Summary {
-    if switch {
-        Tweet {author: "Ivan".to_string(), msg: "i like you".to_string()}
+fn longest<'str>(a: &'str str, b: &'str str) -> &'str str {
+    if a.len() > b.len() {
+        a
     } else {
-        return Article {author: "German".to_string(), text: "We win on backetball".to_string() }
+        b
     }
 }
 
-struct Pair<T> {
-    x: T,
-    y: T,
+struct ImportantExcerpt<'a> {
+    part: &'a str,
 }
 
-impl <T: Display + PartialOrd> Pair<T> {
-    fn cmp_display(&self) {
-        if (self.x > self.y){
-            print!("x > y")
-        } else {
-            print!("y >= x")
-        }
+impl<'a> ImportantExcerpt<'a> {
+    fn level(&self) -> i32 {
+        3
+    }
+
+    fn a_a_r_p(&self, a: &str) -> &str {
+        self.part
     }
 }
-enum AB {
-    X(),
-}
 
-// impl<T: Display> ToString for T {
+fn main () {
+    // // Время жизни (lifetime)
+    // let r;          //---+
+    // {                     //   |
+    //     let x = 5;   //-+ |
+    //     r = &x;           // | |
+    // }                     //-+ |
+    // println!("r = {r}");  //   |
+    //                       //---+
+
+    // Анализатор заимствований
+    // Аннотация времени жизни
+    // &i32,
+    // &'apple i32,
+    // &'apple mut i32, 
+
+    // Статическое время жизни
+    // let string: &'static str = "1234567";
+
+    // Обобщённые времена жизни
+    // let str1 = "string one is cool";
+    // let result;
+    // {
+    //     let str2 = "string two is cooler".to_string();
+    //     result = longest(&str1, str2.as_str());
+    // }
+    // println!("The long string is: '{result}'");
+
+    // Время жизни в структурах
+    let text = String::from("Call me. Please. I love you.");
+    let first_sentence = text.split('.').next().expect("Error here");
+    let i = ImportantExcerpt {
+        part: first_sentence,
+    };
     
-// }
+    // Правила времени жизни
+    // fn foo<'a, 'b>(a: &'a str, b: &'b str)
+    // fn foo<'a>(a: &'a str) -> &'a str
+    // fn foo<'a>(&'a self, a: &'a str)
 
-fn main() {
-    // Типаж
-    let tweet = get_summary_struct(true);
-    let article = get_summary_struct(false);
 
-    println!("{}", tweet.sum());
-    println!("{}", article.sum());
-    
-    // Согласованность или Сиротское Правило (Наш Типаж + любая структура кода) || (любой Типаж + наша структура кода), но не  (Либой Типаж + Любая структура кода)
-    // Поведение по умолчанию
-
-    // println!("{}", notify(&tweet));
-    // println!("{}", notify(&article));
-    // Типажи как параметры, Несколько параметров и Что под этим скрывается
-    // Ясные границы типажей с помощью where
-
-    // Условная реализация методов
-    let a = Pair{x: 3, y: 2};
-    let b = Pair{x: AB::X(), y: AB::X()};
-    a.cmp_display();
-
-    // Общие реализации
-    3.to_string();
 }
