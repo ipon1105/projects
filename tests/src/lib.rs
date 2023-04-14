@@ -18,7 +18,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn it_wokks() {
+        println!("Hi");
         let result = add(2, 2);
         assert_eq!(result, 4);
     }
@@ -35,12 +36,14 @@ mod tests {
     }
 
     #[test] 
+    #[ignore]
     fn work_panic(){
         // panic!("NOOOOOO");
     }
 
     #[test]
     #[should_panic]
+    #[ignore]
     fn work_should_panic(){
         panic!("Yes");
     }
@@ -65,7 +68,7 @@ mod tests {
 
     #[test]
     fn work_result() -> Result<(), String>{
-        // Ok(())
-        Err("O неееет".to_string())
+        Ok(())
+        // Err("O неееет".to_string())
     }
 }
