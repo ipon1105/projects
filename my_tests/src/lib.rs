@@ -1,3 +1,5 @@
+
+
 struct Rect{
     w: i32,
     h: i32,
@@ -9,7 +11,7 @@ impl Rect {
     }
 }
 
-pub fn add(left: usize, right: usize) -> usize {
+fn add(left: usize, right: usize) -> usize {
     left + right
 }
 
