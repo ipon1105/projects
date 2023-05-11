@@ -1,16 +1,21 @@
 use std::env;
-use std::fs;
+use std::process;
+
+use minigrep::{Config, run};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+    let config: Config = Config::build(&args).unwrap_or_else(|err: &str| {
+        println!("[Ошибка|Входных параметров] {err}");
+        process::exit(1);
+    });
 
-    let temple = args.get(1).expect("Неверные параметры программы");
-    let filename = args.get(2).expect("Неверные параметры программы");
+    println!("Ищем это:\t{}", &config.query);
+    println!("Ищем здесь:\t{}",&config.file_path);
 
-    dbg!(temple);
-    dbg!(filename);
-
-    let content = fs::read_to_string(filename).expect("Невозможно открыть файл");
-    println!("\n\nСодержимое файла: {}\n", content);
+    if let Err(e) = run(config){
+        println!("[Ошибка|Обработки] {e}");
+        process::exit(1);
+    }
 }
 
