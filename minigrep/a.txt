@@ -1,0 +1,4 @@
+Ищем это:	to
+Ищем здесь:	text.txt
+Are you nobody, too?
+How dreary to be somebody!

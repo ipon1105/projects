@@ -6,7 +6,7 @@ use minigrep::{Config, run};
 fn main() {
     let args: Vec<String> = env::args().collect();
     let config: Config = Config::build(&args).unwrap_or_else(|err: &str| {
-        println!("[Ошибка|Входных параметров] {err}");
+        eprintln!("[Ошибка|Входных параметров] {err}");
         process::exit(1);
     });
 
@@ -14,7 +14,7 @@ fn main() {
     println!("Ищем здесь:\t{}",&config.file_path);
 
     if let Err(e) = run(config){
-        println!("[Ошибка|Обработки] {e}");
+        eprintln!("[Ошибка|Обработки] {e}");
         process::exit(1);
     }
 }
