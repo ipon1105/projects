@@ -10,16 +10,19 @@ pub struct Config {
 
 // Ассоциативный метод
 impl Config { 
-    pub fn build(arr: &[String]) -> Result<Config, &'static str> {
-        if arr.len() < 3 {
-            return Err("Использование: minigrep {{Запрос}} {{Файл}}");
-        }
-        // let temple = args.get(1).expect("Неверные параметры программы");
-        // let filename = args.get(2).expect("Неверные параметры программы");
-    
-        let query: String = arr[1].clone();
-        let file_path: String = arr[2].clone();
+    pub fn build(mut arr: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        arr.next();
+        
+        let query = match arr.next() {
+            Some(arg) => arg,
+            None => return Err("Использование: minigrep {{Запрос}} {{Файл}}"),
+        };
 
+        let file_path = match arr.next() {
+            Some(arg) => arg,
+            None => return Err("Использование: minigrep {{Запрос}} {{Файл}}"),
+        };
+        
         let ignore_case = env::var("IGNORE_CASE").is_ok();
     
         Ok(Config { query, file_path, ignore_case })
